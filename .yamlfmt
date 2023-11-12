@@ -1,0 +1,4 @@
+formatter:
+  type: basic
+  include_document_start: true
+  disallow_anchors: false

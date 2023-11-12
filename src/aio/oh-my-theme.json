@@ -1,0 +1,273 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "version": 2,
+  "final_space": true,
+  "console_title_template": "{{ .Shell }} in {{ .Folder }}",
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "shell",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "#ffffff",
+          "background": "#0077c2",
+          "properties": {
+            "mapped_shell_names": {
+              "pwsh": "PS"
+            }
+          }
+        },
+        {
+          "type": "os",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "#26C6DA",
+          "background": "#546E7A",
+          "template": " {{ if .WSL }}WSL  {{ end }}{{.Icon}} ",
+          "properties": {
+            "macos": "mac"
+          }
+        },
+        {
+          "type": "dotnet",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "#000000",
+          "background": "#00ffff",
+          "template": "  {{ .Full }} "
+        },
+        {
+          "type": "docker",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "#000000",
+          "background": "#0B59E7",
+          "template": "  {{ .Context }} "
+        },
+        {
+          "type": "kubectl",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "#000000",
+          "background": "#ebcc34",
+          "template": " 󰠳 {{.Context}}{{if .Namespace}} 󰀽 {{.Namespace}}{{end}} "
+        },
+        {
+          "type": "command",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "background": "#ebcc34",
+          "foreground": "#000000",
+          "template": "󰒋 {{ .Output }}",
+          "properties": {
+            "shell": "bash",
+            "command": "kubectl version --short | grep Server | awk -F': ' '{print $NF}' | grep -Eo \"v?[0-9]+\\.[0-9]+\\.[0-9]+[-+]?([a-z0-9]+)?\""
+          }
+        },
+        {
+          "type": "command",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "background": "#9866C7",
+          "foreground": "#000000",
+          "template": " {{ .Output }}",
+          "properties": {
+            "shell": "bash",
+            "command": "helm version --short | awk -F+ '{print $1}'"
+          }
+        },
+        {
+          "type": "session",
+          "style": "diamond",
+          "foreground": "#000000",
+          "background": "p:yellow",
+          "leading_diamond": "\ue0b6",
+          "trailing_diamond": "\ue0b0",
+          "template": " {{ if .SSHSession }}\ueba9 {{ end }}{{ .UserName }} "
+        },
+        {
+          "type": "path",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b0",
+          "foreground": "#000000",
+          "background": "p:orange",
+          "template": " \uea83 {{ path .Path .Location }} ",
+          "properties": {
+            "style": "folder"
+          }
+        },
+        {
+          "type": "git",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "#000000",
+          "background": "p:green",
+          "branch_icon": "\uE725",
+          "background_templates": [
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}p:yellow{{ end }}",
+            "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#FFCC80{{ end }}",
+            "{{ if gt .Ahead 0 }}#B388FF{{ end }}",
+            "{{ if gt .Behind 0 }}#B388FB{{ end }}"
+          ],
+          "template": " {{ .UpstreamIcon }} {{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }}",
+          "properties": {
+            "fetch_status": true,
+            "fetch_stash_count": true,
+            "fetch_upstream_icon": true,
+            "untracked_modes": {
+              "/Users/user/Projects/oh-my-posh/": "no"
+            }
+          }
+        },
+        {
+          "type": "gcp",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "#000000",
+          "background": "#47888d",
+          "template": " {{.Project}} {{.Account}} "
+        },
+        {
+          "type": "root",
+          "style": "powerline",
+          "powerline_symbol": "\ue0b0",
+          "foreground": "p:white",
+          "background": "p:yellow",
+          "template": " \uf0e7 "
+        },
+        {
+          "type": "exit",
+          "style": "diamond",
+          "foreground": "p:white",
+          "background": "p:blue",
+          "background_templates": ["{{ if gt .Code 0 }}p:red{{ end }}"],
+          "leading_diamond": "<transparent,background>\ue0b0</>",
+          "trailing_diamond": "\ue0b4",
+          "template": " {{ if gt .Code 0 }}\uf00d{{ else }}\uf00c{{ end }} ",
+          "properties": {
+            "always_enabled": true
+          }
+        },
+        {
+          "type": "battery",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "foreground": "#193549",
+          "background": "#ffeb3b",
+          "background_templates": [
+            "{{if eq \"Charging\" .State.String}}#40c4ff{{end}}",
+            "{{if eq \"Discharging\" .State.String}}#ff5722{{end}}",
+            "{{if eq \"Full\" .State.String}}#4caf50{{end}}"
+          ],
+          "template": " {{ if not .Error }}{{ .Icon }}{{ .Percentage }}{{ end }} ",
+          "properties": {
+            "discharging_icon": " ",
+            "charging_icon": " ",
+            "charged_icon": " "
+          }
+        },
+        {
+          "type": "text",
+          "style": "diamond",
+          "template": "\n λ"
+        }
+      ]
+    },
+    {
+      "type": "rprompt",
+      "segments": [
+        {
+          "type": "node",
+          "style": "plain",
+          "foreground": "p:green",
+          "background": "transparent",
+          "template": "\ue718 ",
+          "properties": {
+            "display_mode": "files",
+            "fetch_package_manager": false,
+            "home_enabled": false
+          }
+        },
+        {
+          "type": "go",
+          "style": "plain",
+          "foreground": "p:blue",
+          "background": "transparent",
+          "template": "\ue626 ",
+          "properties": {
+            "fetch_version": false
+          }
+        },
+        {
+          "type": "python",
+          "style": "plain",
+          "foreground": "p:yellow",
+          "background": "transparent",
+          "template": "\ue235 ",
+          "properties": {
+            "display_mode": "files",
+            "fetch_version": false,
+            "fetch_virtual_env": false
+          }
+        },
+        {
+          "type": "time",
+          "style": "plain",
+          "foreground": "p:white",
+          "background": "transparent",
+          "template": "at <p:blue><b>{{ .CurrentDate | date \"15:04:05\" }}</b></>"
+        }
+      ]
+    }
+  ],
+  "tooltips": [
+    {
+      "type": "aws",
+      "tips": ["aws"],
+      "style": "diamond",
+      "foreground": "p:white",
+      "background": "p:orange",
+      "leading_diamond": "\ue0b0",
+      "trailing_diamond": "\ue0b4",
+      "template": " \ue7ad {{ .Profile }}{{ if .Region }}@{{ .Region }}{{ end }} ",
+      "properties": {
+        "display_default": true
+      }
+    },
+    {
+      "type": "az",
+      "tips": ["az"],
+      "style": "diamond",
+      "foreground": "p:white",
+      "background": "p:blue",
+      "leading_diamond": "\ue0b0",
+      "trailing_diamond": "\ue0b4",
+      "template": " \ufd03 {{ .Name }} ",
+      "properties": {
+        "display_default": true
+      }
+    }
+  ],
+  "transient_prompt": {
+    "foreground": "p:black",
+    "background": "transparent",
+    "template": "<p:yellow,transparent>\ue0b6</><,p:yellow> {{ .Folder }} </><p:yellow,transparent>\ue0b0</> "
+  },
+  "secondary_prompt": {
+    "foreground": "p:black",
+    "background": "transparent",
+    "template": "<p:yellow,transparent>\ue0b6</><,p:yellow> > </><p:yellow,transparent>\ue0b0</> "
+  },
+  "palette": {
+    "black": "#262B44",
+    "blue": "#4B95E9",
+    "green": "#59C9A5",
+    "orange": "#F07623",
+    "red": "#D81E5B",
+    "white": "#E0DEF4",
+    "yellow": "#F3AE35"
+  }
+}

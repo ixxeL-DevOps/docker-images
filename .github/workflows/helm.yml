@@ -1,0 +1,28 @@
+---
+name: helm-toolbox build
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "src/helm/**"
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    branches:
+      - "main"
+    paths:
+      - "src/helm/**"
+  workflow_dispatch:
+jobs:
+  helm-toolbox:
+    uses: ixxeL-actions/workflows/.github/workflows/docker-build.yaml@main
+    with:
+      component: helm
+      workingdir: src/helm
+      img-name: toolbox
+      podman-username: ${{ vars.DOCKER_HUB_USER }}
+    secrets:
+      git-token: ${{ secrets.PAT }}
+      DOCKER_IO_PWD: ${{ secrets.DOCKER_IO_PWD }}
