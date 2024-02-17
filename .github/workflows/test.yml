@@ -17,11 +17,6 @@ jobs:
         with:
           fetch-depth: "0"
           token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - run: |
-          pip install pyyaml
       - name: changelog generate
         id: changelog
         uses: ixxeL-DevOps/gha-templates/.github/actions/generate-changelog@main
