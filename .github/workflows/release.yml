@@ -1,0 +1,29 @@
+---
+name: Release docker image
+on:
+  workflow_dispatch:
+    inputs:
+      component:
+        required: true
+        type: choice
+        options:
+          - "base"
+          - "builder"
+          - "aio"
+          - "cd"
+          - "certs"
+          - "ci"
+          - "helm"
+        default: "base"
+        description: Image to release
+jobs:
+  retag-img:
+    uses: ixxeL-actions/workflows/.github/workflows/__docker-release__.yaml@main
+    with:
+      component: ${{ inputs.component }}
+      workingdir: src/${{ inputs.component }}
+      img-name: toolbox
+      podman-username: ${{ vars.DOCKER_HUB_USER }}
+    secrets:
+      git-token: ${{ secrets.PAT }}
+      DOCKER_IO_PWD: ${{ secrets.DOCKER_IO_PWD }}
