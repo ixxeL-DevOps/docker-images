@@ -29,6 +29,28 @@ def classify_commits(commits: List[str], groups: List[Dict[str, Optional[str]]])
     return classified_commits
 
 
+def get_repo_url():
+    # Exécute la commande 'git' pour obtenir l'URL du repo
+    command_result = run_command(['git', 'config', '--get', 'remote.origin.url'])
+    pattern = '^(https?://[^/]+/[^/]+/[^/]+)\.git$'
+
+    if command_result:
+        # Extrayez l'URL du repo à partir de la sortie de la commande git
+        repo_url_match = re.match(pattern, command_result[0])
+        if repo_url_match:
+            return repo_url_match.group(1)
+
+    return None
+
+def replace_pull_requests(message, repo_url):
+    # Fonction de rappel pour remplacer dynamiquement le modèle (#<nombre>)
+    def replace(match):
+        pull_number = match.group(1)
+        return f'in {repo_url}/pull/{pull_number}'
+
+    # Recherche et remplace le modèle (#<nombre>) en utilisant la fonction de rappel
+    return re.sub(r'\(#(\d+)\)$', replace, message)
+
 # def generate_markdown(classified_commits: Dict[str, List[str]]) -> str:
 #     markdown = "## Changelog\n"
 #
@@ -52,6 +74,7 @@ def generate_markdown(classified_commits):
                     sha, rest = match.groups()
                     print("sha", sha)
                     print("rest", rest)
+                    rest = replace_pull_requests(rest, get_repo_url())
                     markdown += f"* {sha}: {rest}\n"
             markdown += "\n"
 
@@ -61,7 +84,7 @@ def generate_markdown(classified_commits):
 def main():
     # Tags de borne inférieure et supérieure
     lower_tag = "base-v1.0.1"
-    upper_tag = "builder-v0.1.0"
+    upper_tag = "helm-v0.1.0"
 
     # Fichier de configuration pour le changelog
     config_file = "config.yaml"

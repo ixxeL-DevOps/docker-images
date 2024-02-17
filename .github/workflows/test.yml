@@ -1,0 +1,46 @@
+---
+name: Release docker image
+on:
+  workflow_dispatch:
+    inputs:
+      component:
+        required: true
+        type: choice
+        options:
+          - "base"
+          - "builder"
+          - "aio"
+          - "cd"
+          - "certs"
+          - "ci"
+          - "helm"
+        default: "base"
+        description: Image to release
+jobs:
+  test:
+    name: test
+    timeout-minutes: 5
+    runs-on: self-hosted
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - name: Clone code
+        id: git-clone
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: "0"
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: changelog generate
+        id: changelog
+        uses: ixxeL-DevOps/gha-templates/.github/actions/generate-changelog@main
+        with:
+          workingdir: .
+          lower-tag: "base-v1.0.1"
+          upper-tag: "helm-v0.1.0"
+      - run: |
+          ls -la
+          cat CHANGELOG.md
