@@ -25,4 +25,4 @@ jobs:
       registry-username: ${{ vars.DOCKER_HUB_USER }}
     secrets:
       git-token: ${{ secrets.PAT }}
-      registry-password: ${{ secrets.DOCKER_IO_PWD }}
+      DOCKER_IO_PWD: ${{ secrets.DOCKER_IO_PWD }}
