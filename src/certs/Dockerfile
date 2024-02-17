@@ -3,11 +3,11 @@
 # checkov:skip=CKV_DOCKER_8: GH pipelines require root containers
 ARG BASE_REGISTRY
 
-FROM ${BASE_REGISTRY}python:3.11-alpine3.18 as certs
+FROM ${BASE_REGISTRY}python:3.11-alpine3.19 as certs
 
 LABEL maintainer="fredspiers@gmail.com"
 LABEL org.opencontainers.image.authors="F.SPIERS"
-LABEL org.opencontainers.image.base.name="python:3.11-alpine3.18"
+LABEL org.opencontainers.image.base.name="python:3.11-alpine3.19"
 
 ENV TZ="Europe/Paris"
 
