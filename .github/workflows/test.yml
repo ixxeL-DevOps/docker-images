@@ -1,26 +1,12 @@
 ---
-name: Release docker image
+name: Test
 on:
   workflow_dispatch:
-    inputs:
-      component:
-        required: true
-        type: choice
-        options:
-          - "base"
-          - "builder"
-          - "aio"
-          - "cd"
-          - "certs"
-          - "ci"
-          - "helm"
-        default: "base"
-        description: Image to release
 jobs:
   test:
     name: test
     timeout-minutes: 5
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       pages: write
