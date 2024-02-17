@@ -23,7 +23,8 @@ jobs:
       component: ${{ inputs.component }}
       workingdir: src/${{ inputs.component }}
       img-name: toolbox
-      podman-username: ${{ vars.DOCKER_HUB_USER }}
+      registry-url: docker.io
+      registry-username: ${{ vars.DOCKER_HUB_USER }}
     secrets:
       git-token: ${{ secrets.PAT }}
       DOCKER_IO_PWD: ${{ secrets.DOCKER_IO_PWD }}
