@@ -1,29 +1,10 @@
 ---
-name: Test
+name: Release docker image
 on:
-  workflow_dispatch:
+  push:
+    tags: "*"
 jobs:
-  test:
-    name: test
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pages: write
-    steps:
-      - name: Clone code
-        id: git-clone
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: "0"
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: changelog generate
-        id: changelog
-        uses: ixxeL-DevOps/gha-templates/.github/actions/generate-changelog@main
-        with:
-          workingdir: .
-          lower-tag: "base-v1.0.1"
-          upper-tag: "helm-v0.1.0"
-      - run: |
-          ls -la
-          cat CHANGELOG.md
+  retag-img:
+    uses: ixxeL-DevOps/gha-templates/.github/workflows/__release__.yaml@main
+    secrets:
+      git-token: ${{ secrets.PAT }}
