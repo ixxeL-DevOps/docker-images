@@ -23,7 +23,7 @@ jobs:
       component: ${{ inputs.component }}
       workingdir: src/${{ inputs.component }}
       img-name: toolbox
-      registry-url: docker.io
+      registry-url: docker.io/ixxel
       registry-username: ${{ vars.DOCKER_HUB_USER }}
     secrets:
       git-token: ${{ secrets.PAT }}
