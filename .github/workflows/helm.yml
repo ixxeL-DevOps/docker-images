@@ -25,4 +25,4 @@ jobs:
       podman-username: ${{ vars.DOCKER_HUB_USER }}
     secrets:
       git-token: ${{ secrets.PAT }}
-      DOCKER_IO_PWD: ${{ secrets.DOCKER_IO_PWD }}
+      registry-password: ${{ secrets.DOCKER_IO_PWD }}
