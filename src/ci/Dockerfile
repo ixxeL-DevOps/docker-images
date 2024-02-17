@@ -3,7 +3,7 @@
 # checkov:skip=CKV_DOCKER_8: GH actions must be root to work
 ARG BASE_REGISTRY
 
-FROM ${BASE_REGISTRY}alpine:3.18 AS builder
+FROM ${BASE_REGISTRY}alpine:3.19 AS builder
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN apk update --no-cache && \
