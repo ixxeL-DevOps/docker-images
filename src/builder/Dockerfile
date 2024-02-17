@@ -5,7 +5,7 @@ ARG BASE_REGISTRY
 
 FROM ${BASE_REGISTRY}moby/buildkit:master as buildkit
 
-FROM ${BASE_REGISTRY}python:3.12-alpine3.18
+FROM ${BASE_REGISTRY}python:3.12-alpine3.19
 
 ENV TZ="Europe/Paris"
 
@@ -13,7 +13,7 @@ LABEL maintainer="fredspiers@gmail.com"
 LABEL org.opencontainers.image.authors="FSPIERS"
 LABEL org.opencontainers.image.title="builder-toolbox"
 LABEL org.opencontainers.image.source="https://github.com/ixxeL-docker/docker-images/blob/main/src/builder/Dockerfile"
-LABEL org.opencontainers.image.base.name="python:3.12-alpine3.18"
+LABEL org.opencontainers.image.base.name="python:3.12-alpine3.19"
 
 COPY --from=buildkit /usr/bin/ /usr/bin/
 
