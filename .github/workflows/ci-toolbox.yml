@@ -17,12 +17,12 @@ on:
   workflow_dispatch:
 jobs:
   ci-toolbox:
-    uses: ixxeL-actions/workflows/.github/workflows/docker-build.yaml@main
+    uses: ixxeL-DevOps/gha-templates/.github/workflows/docker-build.yaml@main
     with:
       component: ci
       workingdir: src/ci
       img-name: toolbox
-      podman-username: ${{ vars.DOCKER_HUB_USER }}
+      registry-username: ${{ vars.DOCKER_HUB_USER }}
     secrets:
       git-token: ${{ secrets.PAT }}
       DOCKER_IO_PWD: ${{ secrets.DOCKER_IO_PWD }}

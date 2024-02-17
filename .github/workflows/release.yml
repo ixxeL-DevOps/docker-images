@@ -26,6 +26,7 @@ jobs:
       cache-registry: docker.io/ixxel
       registry-url: docker.io
       registry-username: ${{ vars.DOCKER_HUB_USER }}
+      release: "true"
     secrets:
       git-token: ${{ secrets.PAT }}
       registry-password: ${{ secrets.DOCKER_IO_PWD }}
