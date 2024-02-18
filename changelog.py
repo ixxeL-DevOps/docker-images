@@ -76,7 +76,7 @@ def classify_commits(commits: List[str], groups: List[Dict[str, Optional[str]]])
         matched = False
         for group in groups:
             regexp = group.get('regexp')
-            if regexp and commit and commit.strip() and re.match(regexp, commit):
+            if regexp and commit and commit.strip() and re.match(f"r'{regexp}'", commit):
                 classified_commits[group['title']].append(commit)
                 matched = True
                 break
