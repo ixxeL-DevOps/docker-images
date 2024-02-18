@@ -16,14 +16,14 @@ on:
           - "helm"
         default: "base"
         description: Image to release
-      prerelease:
+      release-type:
         required: true
         type: choice
         options:
-          - "false"
-          - "true"
-        default: "false"
-        description: Prerelease to false is General Availability, true is Release Candidate
+          - "GA"
+          - "RC"
+        default: "GA"
+        description: General Availability or Release Candidate
 jobs:
   release-img:
     uses: ixxeL-DevOps/gha-templates/.github/workflows/__docker-release__.yaml@main
@@ -35,7 +35,7 @@ jobs:
       registry-url: docker.io
       registry-username: ${{ vars.DOCKER_HUB_USER }}
       publish: "true"
-      prerelease: ${{ inputs.prerelease }}
+      prerelease: "${{ inputs.release-type == 'RC' }}"
     secrets:
       git-token: ${{ secrets.PAT }}
       registry-password: ${{ secrets.DOCKER_IO_PWD }}
