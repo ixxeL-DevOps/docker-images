@@ -11,7 +11,8 @@ LABEL org.opencontainers.image.base.name="python:3.12-alpine3.19"
 
 ENV TZ="Europe/Paris"
 
-RUN apk update --no-cache && \
+RUN --mount=type=cache,target=/var/cache/apk \
+    apk update --no-cache && \
     apk upgrade --no-cache && \
     apk add --no-cache --update \
     git \
@@ -25,6 +26,7 @@ RUN apk update --no-cache && \
     tzdata && \
     cp /usr/share/zoneinfo/${TZ} /etc/localtime
 
-RUN apk add --no-cache --update --repository="http://dl-cdn.alpinelinux.org/alpine/edge/community" \
+RUN --mount=type=cache,target=/var/cache/apk \
+    apk add --no-cache --update --repository="http://dl-cdn.alpinelinux.org/alpine/edge/community" \
     helm \
     github-cli
