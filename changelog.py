@@ -1,8 +1,61 @@
-#!/usr/bin/env python3
 import subprocess
 import yaml
 import re
 from typing import List, Dict, Optional
+
+DEFAULT_CONFIG = {
+    'groups': [
+        {
+            'title': "💥 Breaking changes",
+            'regexp': '^.*?(feat|chore|fix)!(?:\(\w+\))?!?: .+$',
+            'order': 50
+        },
+        {
+            'title': "🚀 New Features",
+            'regexp': '^.*?feat(?:\(\w+\))?!?: .+$',
+            'order': 100
+        },
+        {
+            'title': "📦 Dependency updates",
+            'regexp': '^.*?chore(?:\(\w+\))?!?: .+$',
+            'order': 300
+        },
+        {
+            'title': "⚠️ Security updates",
+            'regexp': '^.*?sec(?:\(\w+\))?!?: .+$',
+            'order': 150
+        },
+        {
+            'title': "🐛 Bug fixes",
+            'regexp': '^.*?(fix|refactor)(?:\(\w+\))?!?: .+$',
+            'order': 200
+        },
+        {
+            'title': "🔨 Refactoring",
+            'regexp': '^.*?refactor(?:\(\w+\))?!?: .+$',
+            'order': 250
+        },
+        {
+            'title': "♻️ Revert changes",
+            'regexp': '^.*?revert(?:\(\w+\))?!?: .+$',
+            'order': 250
+        },
+        {
+            'title': "📚 Documentation updates",
+            'regexp': '^.*?docs(?:\(\w+\))?!?: .+$',
+            'order': 400
+        },
+        {
+            'title': "🏗️ Build process updates",
+            'regexp': '^.*?(build|ci)(?:\(\w+\))?!?: .+$',
+            'order': 400
+        },
+        {
+            'title': "🧰 Other work",
+            'order': 9999
+        }
+    ]
+}
 
 
 def run_command(command: List[str]) -> str:
@@ -17,53 +70,33 @@ def run_command_list(command: List[str]) -> List[str]:
 
 def classify_commits(commits: List[str], groups: List[Dict[str, Optional[str]]]) -> Dict[str, List[str]]:
     classified_commits = {group['title']: [] for group in groups}
+    classified_commits['🧰 Other work'] = []
 
     for commit in commits:
+        matched = False
         for group in groups:
-            regexp = group['regexp']
-            # print("regexp", regexp)
-            if commit and commit.strip() and bool(re.match(regexp, commit)):
-                print(f"found commit {commit} in group {group['title']}")
+            regexp = group.get('regexp')
+            if regexp and commit and commit.strip() and re.match(regexp, commit):
                 classified_commits[group['title']].append(commit)
+                matched = True
+                break
+
+        if not matched:
+            classified_commits['🧰 Other work'].append(commit)
 
     return classified_commits
 
 
-def get_repo_url():
-    # Exécute la commande 'git' pour obtenir l'URL du repo
-    command_result = run_command(['git', 'config', '--get', 'remote.origin.url'])
-    pattern = '^(https?://[^/]+/[^/]+/[^/]+)\.git$'
-
-    if command_result:
-        # Extrayez l'URL du repo à partir de la sortie de la commande git
-        repo_url_match = re.match(pattern, command_result[0])
-        if repo_url_match:
-            return repo_url_match.group(1)
-
-    return None
-
 def replace_pull_requests(message, repo_url):
-    # Fonction de rappel pour remplacer dynamiquement le modèle (#<nombre>)
     def replace(match):
         pull_number = match.group(1)
-        return f'in {repo_url}/pull/{pull_number}'
+        return f'in ({repo_url}/pull/{pull_number})'
 
-    # Recherche et remplace le modèle (#<nombre>) en utilisant la fonction de rappel
     return re.sub(r'\(#(\d+)\)$', replace, message)
 
-# def generate_markdown(classified_commits: Dict[str, List[str]]) -> str:
-#     markdown = "## Changelog\n"
-#
-#     for title, commits in classified_commits.items():
-#         if commits:
-#             markdown += f"### {title}\n"
-#             markdown += "\n".join(commits) + "\n\n"
-#
-#     return markdown
-
-def generate_markdown(classified_commits):
+def generate_markdown(classified_commits, lower_tag, upper_tag, repo_url):
     markdown = "## Changelog\n"
-    pattern = '^([a-f0-9]+) (.+)$'
+    pattern = '^([a-f0-9]+) (.+) @(.+)$'
 
     for title, commits in classified_commits.items():
         if commits:
@@ -71,40 +104,43 @@ def generate_markdown(classified_commits):
             for commit in commits:
                 match = re.match(pattern, commit)
                 if match:
-                    sha, rest = match.groups()
-                    print("sha", sha)
-                    print("rest", rest)
-                    rest = replace_pull_requests(rest, get_repo_url())
-                    markdown += f"* {sha}: {rest}\n"
+                    sha, rest, author = match.groups()
+                    rest = replace_pull_requests(rest, repo_url)
+                    markdown += f"* {sha}: {rest} by (@{author})\n"
             markdown += "\n"
 
+    markdown += f"**Full Changelog**: {repo_url}/compare/{lower_tag}...{upper_tag}"
     return markdown
 
 
+def load_user_config(file_path):
+    try:
+        with open(file_path, 'r') as config_file:
+            return yaml.safe_load(config_file)
+    except FileNotFoundError:
+        return {}
+
+def merge_configs(default_config, user_config):
+    merged_config = default_config.copy()
+    merged_config.update(user_config)
+    return merged_config
+
 def main():
-    # Tags de borne inférieure et supérieure
     lower_tag = "base-v1.0.1"
-    upper_tag = "helm-v0.1.0"
+    upper_tag = "base-v1.1.1"
+    repo_url = "https://github.com/ixxeL-DevOps/docker-images"
 
-    # Fichier de configuration pour le changelog
-    config_file = "config.yaml"
+    config_file = ".config-changelog.yml"
 
-    # Récupérer les commits entre les tags spécifiés
-    commits = run_command_list(['git', 'log', f'{lower_tag}..{upper_tag}', '--pretty=format:%H %s'])
-    # print(f"Commits between {lower_tag} and {upper_tag}:")
-    # for commit in commits:
-    #     print(commit)
+    user_config = load_user_config(config_file)
+    config = merge_configs(DEFAULT_CONFIG, user_config)
 
-    with open(config_file, 'r') as config_file:
-        config = yaml.load(config_file, Loader=yaml.FullLoader)
+    commits = run_command_list(['git', 'log', f'{lower_tag}..{upper_tag}', '--pretty=format:%H %s @%an'])
 
-    # Classer les commits en fonction des règles de classification définies dans la configuration
     classified_commits = classify_commits(commits, config['groups'])
 
-    # Générer le markdown à partir des commits classés
-    final_markdown = generate_markdown(classified_commits)
+    final_markdown = generate_markdown(classified_commits, lower_tag, upper_tag, repo_url)
 
-    # Imprimer le markdown
     print(final_markdown)
 
     with open('CHANGELOG.md', 'w') as file:
