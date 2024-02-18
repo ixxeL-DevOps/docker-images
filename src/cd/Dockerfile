@@ -6,7 +6,7 @@ ARG KYVERNO_VERSION
 
 FROM ${BASE_REGISTRY}alpine:latest AS builder
 
-ENV KYVERNO_VERSION="v1.10.0"
+ENV KYVERNO_VERSION="v1.11.4"
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN --mount=type=cache,target=/var/cache/apk \
