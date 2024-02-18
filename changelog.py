@@ -76,7 +76,7 @@ def classify_commits(commits: List[str], groups: List[Dict[str, Optional[str]]])
         matched = False
         for group in groups:
             regexp = group.get('regexp')
-            if regexp and commit and commit.strip() and re.match(f"r'{regexp}'", commit):
+            if regexp and commit and commit.strip() and re.match(regexp, commit):
                 classified_commits[group['title']].append(commit)
                 matched = True
                 break
@@ -96,7 +96,7 @@ def replace_pull_requests(message, repo_url):
 
 def generate_markdown(classified_commits, lower_tag, upper_tag, repo_url):
     markdown = "## Changelog\n"
-    pattern = '^([a-f0-9]+) (.+) @(.+)$'
+    pattern = r'^([a-f0-9]+) (.+?) @(.+?) (\(tag: (.+?)\))?$'
 
     for title, commits in classified_commits.items():
         if commits:
@@ -104,9 +104,10 @@ def generate_markdown(classified_commits, lower_tag, upper_tag, repo_url):
             for commit in commits:
                 match = re.match(pattern, commit)
                 if match:
-                    sha, rest, author = match.groups()
+                    sha, rest, author, _, tag = match.groups()
                     rest = replace_pull_requests(rest, repo_url)
-                    markdown += f"* {sha}: {rest} by (@{author})\n"
+                    tag_info = f" [🏷 {tag}]({repo_url}/tree/{tag})" if tag else ""
+                    markdown += f"* {sha}: {rest} by (@{author}){tag_info}\n"
             markdown += "\n"
 
     markdown += f"**Full Changelog**: {repo_url}/compare/{lower_tag}...{upper_tag}"
@@ -135,7 +136,7 @@ def main():
     user_config = load_user_config(config_file)
     config = merge_configs(DEFAULT_CONFIG, user_config)
 
-    commits = run_command_list(['git', 'log', f'{lower_tag}..{upper_tag}', '--pretty=format:%H %s @%an'])
+    commits = run_command_list(['git', 'log', f'{lower_tag}..{upper_tag}', '--pretty=format:%H %s @%an %d'])
 
     classified_commits = classify_commits(commits, config['groups'])
 
