@@ -21,7 +21,7 @@ jobs:
     with:
       component: arc
       workingdir: src/arc
-      img-name: arc-runner
+      img-name: toolbox
       registry-username: ${{ vars.DOCKER_HUB_USER }}
     secrets:
       git-token: ${{ secrets.PAT }}
