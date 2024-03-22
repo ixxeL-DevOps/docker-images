@@ -42,16 +42,15 @@ RUN wget -qO /usr/local/bin/yq "https://github.com/mikefarah/yq/releases/latest/
     VALIDATOR_VERSION=$(curl -sSfL "https://github.com/mpalmer/action-validator/releases" | grep -oE "v[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}" | uniq | sort -rV | head -1) && \
     wget -qO /usr/local/bin/action-validator "https://github.com/mpalmer/action-validator/releases/download/${VALIDATOR_VERSION}/action-validator_linux_amd64"
 
-RUN pip3 install --no-cache-dir checkov
+RUN pip3 install --no-cache-dir --upgrade checkov pre-commit && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
+    update-ca-certificates
 
 USER runner
 
-RUN pip3 install --no-cache-dir --upgrade checkov pre-commit && \
-    helm plugin install "https://github.com/chartmuseum/helm-push" && \
+RUN helm plugin install "https://github.com/chartmuseum/helm-push" && \
     helm plugin install "https://github.com/datreeio/helm-datree" && \
     helm plugin install "https://github.com/helm-unittest/helm-unittest" && \
-    helm plugin install "https://github.com/melmorabity/helm-kubeconform" && \
-    ln -s /usr/bin/python3 /usr/bin/python && \
-    update-ca-certificates
+    helm plugin install "https://github.com/melmorabity/helm-kubeconform"
 
 ENV HELM_PLUGINS=/home/runner/.local/share/helm/plugins
