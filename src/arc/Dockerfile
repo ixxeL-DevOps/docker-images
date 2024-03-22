@@ -44,6 +44,8 @@ RUN wget -qO /usr/local/bin/yq "https://github.com/mikefarah/yq/releases/latest/
 
 RUN pip3 install --no-cache-dir checkov
 
+USER runner
+
 RUN pip3 install --no-cache-dir --upgrade checkov pre-commit && \
     helm plugin install "https://github.com/chartmuseum/helm-push" && \
     helm plugin install "https://github.com/datreeio/helm-datree" && \
@@ -51,7 +53,5 @@ RUN pip3 install --no-cache-dir --upgrade checkov pre-commit && \
     helm plugin install "https://github.com/melmorabity/helm-kubeconform" && \
     ln -s /usr/bin/python3 /usr/bin/python && \
     update-ca-certificates
-
-USER runner
 
 ENV HELM_PLUGINS=/home/runner/.local/share/helm/plugins
