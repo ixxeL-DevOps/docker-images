@@ -5,6 +5,8 @@ ARG BASE_REGISTRY
 
 FROM ${BASE_REGISTRY}summerwind/actions-runner:ubuntu-22.04 AS builder
 
+USER root
+
 COPY ./pki_root_ca.pem /usr/local/share/ca-certificates/root.crt
 COPY ./pki_int_ca.pem /usr/local/share/ca-certificates/int.crt
 
@@ -13,7 +15,7 @@ RUN apt-get update && \
     git \
     curl \
     wget \
-    apt-get-transport-https \
+    apt-transport-https \
     python3-pip \
     tar \
     gettext
@@ -49,5 +51,7 @@ RUN pip3 install --no-cache-dir --upgrade checkov pre-commit && \
     helm plugin install "https://github.com/melmorabity/helm-kubeconform" && \
     ln -s /usr/bin/python3 /usr/bin/python && \
     update-ca-certificates
+
+USER runner
 
 ENV HELM_PLUGINS=/home/runner/.local/share/helm/plugins
