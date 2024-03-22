@@ -1,0 +1,28 @@
+---
+name: arc-runner build
+on:
+  push:
+    branches:
+      - "main"
+    paths:
+      - "src/arc/**"
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    branches:
+      - "main"
+    paths:
+      - "src/arc/**"
+  workflow_dispatch:
+jobs:
+  arc-runner:
+    uses: ixxeL-DevOps/gha-templates/.github/workflows/docker-build.yaml@main
+    with:
+      component: arc
+      workingdir: src/arc
+      img-name: arc-runner
+      registry-username: ${{ vars.DOCKER_HUB_USER }}
+    secrets:
+      git-token: ${{ secrets.PAT }}
+      DOCKER_IO_PWD: ${{ secrets.DOCKER_IO_PWD }}

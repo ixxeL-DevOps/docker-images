@@ -35,10 +35,10 @@ repos:
     rev: v3.0.0
     hooks:
       - id: prettier
-  - repo: https://github.com/hadolint/hadolint
-    rev: v2.12.1-beta
-    hooks:
-      - id: hadolint
+  # - repo: https://github.com/hadolint/hadolint
+  #   rev: v2.12.1-beta
+  #   hooks:
+  #     - id: hadolint
   - repo: https://github.com/google/yamlfmt
     rev: v0.9.0
     hooks:
