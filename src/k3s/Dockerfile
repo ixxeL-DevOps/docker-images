@@ -6,7 +6,7 @@ FROM rancher/k3s:v1.21.2-k3s1 as base
 # some software into our container, and alpine
 # is easier to work with than scratch.
 #FROM alpine:3.10
-FROM alpine:3.14
+FROM alpine:3.19
 
 # Do the same stuff in the k3s-scratch image's
 # final stage.
