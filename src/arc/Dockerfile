@@ -46,7 +46,7 @@ RUN pip3 install --no-cache-dir --upgrade checkov pre-commit && \
     ln -s /usr/bin/python3 /usr/bin/python && \
     update-ca-certificates
 
-USER runner 
+USER runner  
 
 RUN helm plugin install "https://github.com/chartmuseum/helm-push" && \
     helm plugin install "https://github.com/datreeio/helm-datree" && \
