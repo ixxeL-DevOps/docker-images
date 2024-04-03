@@ -3,6 +3,7 @@
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/ixxeL-DevOps/docker-images/main.svg)](https://results.pre-commit.ci/latest/github/ixxeL-DevOps/docker-images/main)
 
 ![CI](https://github.com/ixxeL-DevOps/docker-images/actions/workflows/aio.yml/badge.svg)
+![CI](https://github.com/ixxeL-DevOps/docker-images/actions/workflows/arc.yml/badge.svg)
 ![CI](https://github.com/ixxeL-DevOps/docker-images/actions/workflows/base.yml/badge.svg)
 ![CI](https://github.com/ixxeL-DevOps/docker-images/actions/workflows/builder.yml/badge.svg)
 ![CI](https://github.com/ixxeL-DevOps/docker-images/actions/workflows/cd-toolbox.yml/badge.svg)
