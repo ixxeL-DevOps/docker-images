@@ -3,7 +3,7 @@
 # checkov:skip=CKV_DOCKER_8: GH actions must be root to work
 ARG BASE_REGISTRY
 
-FROM ${BASE_REGISTRY}alpine:latest AS builder
+FROM alpine:latest AS builder
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN --mount=type=cache,target=/var/cache/apk \
@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/var/cache/apk \
     curl -sSfL "https://github.com/norwoodj/helm-docs/releases/download/${HELMDOC_VERSION}/helm-docs_${HELMDOC_VER_LIGHT}_Linux_x86_64.tar.gz" | tar -xz && \
     mv ./helm-docs /usr/local/bin/helm-docs
 
-FROM ${BASE_REGISTRY}python:3.11-alpine3.19
+FROM python:3.11-alpine3.19
 
 ENV TZ="Europe/Paris"
 

@@ -3,7 +3,7 @@
 # checkov:skip=CKV_DOCKER_8: GH actions must be root to work
 ARG BASE_REGISTRY
 
-FROM ${BASE_REGISTRY}alpine:3.19 AS builder
+FROM alpine:3.19 AS builder
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN apk update --no-cache && \
@@ -16,7 +16,7 @@ RUN apk update --no-cache && \
     chmod +x action-validator_linux_amd64 && \
     mv ./action-validator_linux_amd64 /usr/local/bin/action-validator
 
-FROM ${BASE_REGISTRY}ixxel/toolbox:certs-latest AS cd-toolbox
+FROM ixxel/toolbox:certs-latest AS cd-toolbox
 
 LABEL org.opencontainers.image.title="ci-toolbox"
 LABEL org.opencontainers.image.source="https://github.com/ixxeL-docker/docker-images/blob/main/src/ci/Dockerfile"

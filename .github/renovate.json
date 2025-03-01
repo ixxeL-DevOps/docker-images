@@ -70,7 +70,9 @@
       "matchFileNames": ["src/**"],
       "addLabels": ["MANUAL-REVIEW", "{{ lookup (split packageFileDir '/') 1 }}"],
       "groupName": "{{ lookup (split packageFileDir '/') 1 }}-alpine",
-      "automerge": false
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
     }
   ]
 }

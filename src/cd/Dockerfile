@@ -4,7 +4,7 @@
 ARG BASE_REGISTRY
 ARG KYVERNO_VERSION
 
-FROM ${BASE_REGISTRY}alpine:latest AS builder
+FROM alpine:latest AS builder
 
 ENV KYVERNO_VERSION="v1.11.4"
 
