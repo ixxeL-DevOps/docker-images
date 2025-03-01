@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+set:
+  - pipefail
+shopt:
+  - globstar
+
+silent: true
+
+vars:
+  SRC_DIR: "{{.ROOT_DIR}}/src"
+  
+includes:
+  svu: .taskfiles/svu
+  pre-commit: .taskfiles/pre-commit
+
+tasks:
+  default:
+    silent: true
+    cmd: task -l
+
+  noop:
+    internal: true
+    silent: true
+    cmd: noop() { :; }

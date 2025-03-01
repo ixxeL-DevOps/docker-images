@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+tasks:
+  current:
+    desc: Initialize pre-commit hooks
+    preconditions:
+      - which svu gum
+    vars:
+      COMPONENT:
+        sh: gum choose --header="Choose a component" "aio" "arc" "base" "builder" "cd" "ci" "certs" "helm" 
+      PRERELEASE_PATTERN:
+        sh: gum confirm "Release Candidate ?" && echo "-rc" || echo ""
+    cmds:
+      - svu current --tag.prefix="{{.COMPONENT}}-v" --tag.pattern="{{.COMPONENT}}-v[0-9]*.[0-9]*.[0-9]*{{.PRERELEASE_PATTERN}}*"
+    interactive: true
+
+  prerelease:
+    desc: Initialize pre-commit hooks
+    preconditions:
+      - which svu gum
+    vars:
+      COMPONENT:
+        sh: gum choose --header="Choose a component" "aio" "arc" "base" "builder" "cd" "ci" "certs" "helm" 
+    cmds:
+      - svu prerelease --prerelease="rc" --tag.prefix="{{.COMPONENT}}-v" --tag.pattern="{{.COMPONENT}}-v[0-9]*.[0-9]*.[0-9]*"
+    interactive: true
+
+  next:
+    desc: Initialize pre-commit hooks
+    preconditions:
+      - which svu gum gh
+    vars:
+      COMPONENT:
+        sh: gum choose --header="Choose a component" "aio" "arc" "base" "builder" "cd" "ci" "certs" "helm"
+      BUILD:
+        sh: gum confirm "Dev build ?" && echo "-build-$(gh run list --limit 1 --workflow {{.COMPONENT}}.yml --json number --jq '.[0].number')" || echo "" 
+    cmds:
+      - RC=$(svu current --tag.prefix="{{.COMPONENT}}-v" --tag.pattern="{{.COMPONENT}}-v[0-9]*.[0-9]*.[0-9]*-rc*")
+      - echo "$(svu next --tag.prefix="{{.COMPONENT}}-v" --prerelease=${RC} --tag.pattern="{{.COMPONENT}}-v[0-9]*.[0-9]*.[0-9]*" --log.directory={{.SRC_DIR}}/{{.COMPONENT}}){{.BUILD}}"
+    interactive: true
