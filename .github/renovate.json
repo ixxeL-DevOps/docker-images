@@ -71,7 +71,7 @@
       "matchFileNames": ["src/builder/**"],
       "addLabels": ["AUTO-MERGE", "{{ lookup (split packageFileDir '/') 1 }}"],
       "groupName": "{{ lookup (split packageFileDir '/') 1 }}-alpine",
-      "automerge": false,
+      "automerge": true,
       "automergeType": "pr",
       "platformAutomerge": true
     }

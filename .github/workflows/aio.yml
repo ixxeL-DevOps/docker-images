@@ -18,7 +18,7 @@ on:
       - "src/aio/**"
   workflow_dispatch:
 jobs:
-  build:
+  aio-toolbox:
     uses: ixxeL-DevOps/gha-templates/.github/workflows/docker-build.yaml@main
     with:
       component: aio

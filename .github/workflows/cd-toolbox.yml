@@ -18,7 +18,7 @@ on:
       - "src/cd/**"
   workflow_dispatch:
 jobs:
-  build:
+  cd-toolbox:
     uses: ixxeL-DevOps/gha-templates/.github/workflows/docker-build.yaml@main
     with:
       component: cd
