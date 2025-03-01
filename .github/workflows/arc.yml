@@ -1,8 +1,7 @@
 ---
 name: arc-runner build
 on:
-  schedule:
-    - cron: 0 1 * * 1
+  merge_group:
   push:
     branches:
       - "main"
@@ -26,5 +25,3 @@ jobs:
       img-name: toolbox
       registry-username: ${{ vars.DOCKER_HUB_USER }}
     secrets: inherit
-      # git-token: ${{ secrets.PAT }}
-      # DOCKER_IO_PWD: ${{ secrets.DOCKER_IO_PWD }}
