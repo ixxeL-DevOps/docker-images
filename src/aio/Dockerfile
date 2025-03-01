@@ -3,7 +3,7 @@
 # checkov:skip=CKV_DOCKER_8: Kaniko must be root to work
 ARG BASE_REGISTRY
 
-FROM ${BASE_REGISTRY}alpine:latest AS builder
+FROM alpine:3.21 AS builder
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 RUN apk update --no-cache \
@@ -12,7 +12,7 @@ RUN apk update --no-cache \
     && curl -sSfL "https://github.com/derailed/k9s/releases/download/${K9S_VERSION}/k9s_Linux_amd64.tar.gz" | tar -xz \
     && mv ./k9s /usr/local/bin/k9s
 
-FROM ${BASE_REGISTRY}ixxel/toolbox:cd-latest as aio
+FROM ixxel/toolbox:cd-latest as aio
 
 LABEL org.opencontainers.image.title="all-in-one-toolbox"
 LABEL org.opencontainers.image.source="https://github.com/ixxeL-docker/docker-images/blob/main/src/aio/Dockerfile"

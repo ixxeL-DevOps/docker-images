@@ -3,7 +3,7 @@
 # checkov:skip=CKV_DOCKER_8: Kaniko must be root to work
 ARG BASE_REGISTRY
 
-FROM ${BASE_REGISTRY}summerwind/actions-runner:ubuntu-22.04 AS builder
+FROM summerwind/actions-runner:ubuntu-22.04 AS builder
 
 USER root
 
