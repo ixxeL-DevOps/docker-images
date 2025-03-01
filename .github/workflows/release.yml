@@ -36,6 +36,7 @@ jobs:
       registry-url: docker.io
       registry-username: ${{ vars.DOCKER_HUB_USER }}
       prerelease: "${{ inputs.release-type == 'RC' }}"
-    secrets:
-      git-token: ${{ secrets.PAT }}
-      registry-password: ${{ secrets.DOCKER_IO_PWD }}
+    secrets: inherit
+    # secrets:
+    #   git-token: ${{ secrets.PAT }}
+    #   registry-password: ${{ secrets.DOCKER_IO_PWD }}
