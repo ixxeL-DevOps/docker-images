@@ -18,7 +18,7 @@ on:
       - "src/arc/**"
   workflow_dispatch:
 jobs:
-  arc-runner:
+  build:
     uses: ixxeL-DevOps/gha-templates/.github/workflows/docker-build.yaml@main
     with:
       component: arc

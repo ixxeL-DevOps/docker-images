@@ -18,7 +18,7 @@ on:
       - "src/ci/**"
   workflow_dispatch:
 jobs:
-  ci-toolbox:
+  build:
     uses: ixxeL-DevOps/gha-templates/.github/workflows/docker-build.yaml@main
     with:
       component: ci

@@ -18,7 +18,7 @@ on:
       - "src/certs/**"
   workflow_dispatch:
 jobs:
-  certs-toolbox:
+  build:
     uses: ixxeL-DevOps/gha-templates/.github/workflows/docker-build.yaml@main
     with:
       component: certs

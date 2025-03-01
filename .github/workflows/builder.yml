@@ -18,7 +18,7 @@ on:
       - "src/builder/**"
   workflow_dispatch:
 jobs:
-  builder-toolbox:
+  build:
     uses: ixxeL-DevOps/gha-templates/.github/workflows/docker-build.yaml@main
     with:
       component: builder

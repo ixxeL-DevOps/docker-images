@@ -9,6 +9,7 @@
   "automergeStrategy": "squash",
   "rebaseWhen": "behind-base-branch",
   "platformAutomerge": true,
+  "ignorePaths": ["src/aio/**", "src/arc/**", "src/base/**", "src/cd/**", "src/certs/**", "src/ci/**", "src/helm/**", "src/k3s/**"],
   "docker": {
     "fileMatch": [
       "(^|/|\\.)([Dd]ocker|[Cc]ontainer)file$",
@@ -57,7 +58,7 @@
       "description": "Manual merge for Tooling instance major and minor updates",
       "matchManagers": ["dockerfile"],
       "additionalBranchPrefix": "docker/",
-      "matchFileNames": ["src/**"],
+      "matchFileNames": ["src/builder/**"],
       "addLabels": ["MANUAL-REVIEW", "{{ lookup (split packageFileDir '/') 1 }}"],
       "groupName": "{{ lookup (split packageFileDir '/') 1 }}",
       "automerge": false,
@@ -67,10 +68,10 @@
       "description": "Manual merge for Tooling instance major and minor updates",
       "matchManagers": ["custom.regex"],
       "additionalBranchPrefix": "docker/",
-      "matchFileNames": ["src/**"],
-      "addLabels": ["MANUAL-REVIEW", "{{ lookup (split packageFileDir '/') 1 }}"],
+      "matchFileNames": ["src/builder/**"],
+      "addLabels": ["AUTO-MERGE", "{{ lookup (split packageFileDir '/') 1 }}"],
       "groupName": "{{ lookup (split packageFileDir '/') 1 }}-alpine",
-      "automerge": true,
+      "automerge": false,
       "automergeType": "pr",
       "platformAutomerge": true
     }

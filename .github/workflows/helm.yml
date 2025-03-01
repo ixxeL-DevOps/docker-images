@@ -18,7 +18,7 @@ on:
       - "src/helm/**"
   workflow_dispatch:
 jobs:
-  helm-toolbox:
+  build:
     uses: ixxeL-DevOps/gha-templates/.github/workflows/docker-build.yaml@main
     with:
       component: helm
