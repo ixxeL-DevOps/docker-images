@@ -3,9 +3,9 @@
 # checkov:skip=CKV_DOCKER_8: Buildkit must be root to work
 ARG BASE_REGISTRY
 
-FROM ${BASE_REGISTRY}moby/buildkit:master as buildkit
+FROM moby/buildkit:master as buildkit
 
-FROM ${BASE_REGISTRY}python:3.12-alpine3.19
+FROM python:3.12-alpine3.19
 
 ENV TZ="Europe/Paris"
 

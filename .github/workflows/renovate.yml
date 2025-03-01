@@ -1,0 +1,49 @@
+---
+name: Renovate check
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types:
+    - renovate
+  schedule:
+  - cron: "0 2 * * *"
+  - cron: "0 3 * * *"
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  renovate:
+    runs-on: self-hosted
+    steps:
+      - name: Clone repo
+        id: clone
+        uses: ixxeL-DevOps/gha-templates/.github/actions/git-clone@main
+        with:
+          mode: "app"
+          app-id: ${{ secrets.GHAPP_APP_ID }}
+          private-key: ${{ secrets.GHAPP_PRIVATE_KEY }}
+
+      - name: Git config
+        id: git-config
+        uses: ixxeL-DevOps/gha-templates/.github/actions/git-config@main
+        with:
+          git-email: ${{ steps.clone.outputs.USER_EMAIL }}
+          git-username: ${{ steps.clone.outputs.USER_NAME }}
+
+      - name: Run Renovate
+        uses: renovatebot/github-action@v41.0.14
+        with:
+          token: ${{ steps.clone.outputs.TOKEN }}
+          docker-volumes: |
+            ${{ github.workspace }}/.npmrc:/github-action/.npmrc
+          env-regex: ^(?:RENOVATE_\w+|LOG_LEVEL|GITHUB_COM_TOKEN|NODE_OPTIONS|NODE_TLS_REJECT_UNAUTHORIZED|NPM_CONFIG_USERCONFIG)$
+        env:
+          LOG_LEVEL: debug
+          RENOVATE_AUTODISCOVER: 'false'
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          NODE_TLS_REJECT_UNAUTHORIZED: '0'
+          NPM_CONFIG_USERCONFIG: /github-action/.npmrc
+      
+    

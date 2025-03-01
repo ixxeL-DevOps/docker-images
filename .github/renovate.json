@@ -1,0 +1,57 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["mergeConfidence:all-badges", "config:recommended"],
+  "enabledManagers": ["dockerfile", "github-actions"],
+  "dependencyDashboard": true,
+  "prHourlyLimit": 60,
+  "prConcurrentLimit": 60,
+  "branchConcurrentLimit": 60,
+  "automergeStrategy": "squash",
+  "rebaseWhen": "behind-base-branch",
+  "platformAutomerge": true,
+  "ignorePaths": ["src/aio/**", "src/arc/**", "src/base/**", "src/cd/**", "src/certs/**", "src/ci/**", "src/helm/**", "src/k3s/**"],
+  "docker": {
+    "fileMatch": [
+      "(^|/|\\.)([Dd]ocker|[Cc]ontainer)file$",
+      "(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$"
+    ]
+  },
+  "packageRules": [
+    {
+      "description": "Global rules for version detection",
+      "matchManagers": ["dockerfile", "github-actions"],
+      "matchUpdateTypes": ["major", "minor", "patch"],
+      "labels": ["{{updateType}}"]
+    },
+    {
+      "description": "Manual merge GHA for major release",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["major"],
+      "additionalBranchPrefix": "gha/",
+      "matchFileNames": [".github/**"],
+      "addLabels": ["MANUAL-REVIEW"],
+      "automerge": false
+    },
+    {
+      "description": "Automerge GHA for patch/minor release",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "additionalBranchPrefix": "gha/",
+      "matchFileNames": [".github/**"],
+      "addLabels": ["AUTO-MERGE"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    },
+    {
+      "description": "Manual merge for Tooling instance major and minor updates",
+      "matchManagers": ["dockerfile"],
+      "additionalBranchPrefix": "docker/",
+      "matchFileNames": ["src/builder/**"],
+      "addLabels": ["MANUAL-REVIEW", "{{ lookup (split packageFileDir '/') 1 }}"],
+      "groupName": "{{ lookup (split packageFileDir '/') 1 }}",
+      "automerge": false,
+      "versionCompatibility": "^(?<version>[^-]+)(?<compatibility>-.*)?$"
+    }
+  ]
+}
