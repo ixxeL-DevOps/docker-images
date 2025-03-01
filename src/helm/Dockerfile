@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/var/cache/apk \
     curl -sSfL "https://github.com/norwoodj/helm-docs/releases/download/${HELMDOC_VERSION}/helm-docs_${HELMDOC_VER_LIGHT}_Linux_x86_64.tar.gz" | tar -xz && \
     mv ./helm-docs /usr/local/bin/helm-docs
 
-FROM python:3.11-alpine3.19
+FROM python:3.11-alpine3.21
 
 ENV TZ="Europe/Paris"
 
