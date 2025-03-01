@@ -25,6 +25,6 @@ jobs:
       workingdir: src/aio
       img-name: toolbox
       registry-username: ${{ vars.DOCKER_HUB_USER }}
-    secrets:
-      git-token: ${{ secrets.PAT }}
-      DOCKER_IO_PWD: ${{ secrets.DOCKER_IO_PWD }}
+    secrets: inherit
+      # git-token: ${{ secrets.PAT }}
+      # DOCKER_IO_PWD: ${{ secrets.DOCKER_IO_PWD }}
