@@ -5,7 +5,7 @@ ARG BASE_REGISTRY
 
 FROM moby/buildkit:master as buildkit
 
-FROM python:3.13-alpine3.19
+FROM python:3.12-alpine3.21
 
 ENV TZ="Europe/Paris"
 
