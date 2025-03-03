@@ -13,7 +13,7 @@
   "docker": {
     "fileMatch": [
       "(^|/|\\.)([Dd]ocker|[Cc]ontainer)file$",
-      "(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$"
+      "(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$" 
     ]
   },
   "customManagers": [
