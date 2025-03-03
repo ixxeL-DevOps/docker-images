@@ -1,11 +1,8 @@
 ---
-name: Merge group validate
+name: Merge queue validate
 on:
   merge_group:
 jobs:
   build-toolbox:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Merge queue validation
-        run: |
-          echo "Validation merge queue on ${{ github.ref_name }} / ${{ github.event_name }}"
+    if: github.event_name == 'pull_request'
+    uses: ixxeL-DevOps/gha-templates/.github/workflows/docker-build.yaml@main
