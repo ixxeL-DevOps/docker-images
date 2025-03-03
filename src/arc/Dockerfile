@@ -18,7 +18,7 @@ RUN apt-get update && \
     apt-transport-https \
     python3-pip \
     tar \
-    gettext
+    gettext 
 
 RUN curl -fsSL "https://cli.github.com/packages/githubcli-archive-keyring.gpg" | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && \
     chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg && \
