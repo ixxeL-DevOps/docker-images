@@ -10,7 +10,6 @@ LABEL org.opencontainers.image.authors="F.SPIERS"
 LABEL org.opencontainers.image.base.name="python:3.12-alpine3.21"
 
 ENV TZ="Europe/Paris"
-ENV TEST="toberemoved"
 
 RUN --mount=type=cache,target=/var/cache/apk \
     apk update --no-cache && \
