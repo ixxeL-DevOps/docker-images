@@ -1,7 +1,6 @@
 ---
 name: base-toolbox build
 on:
-  merge_group:
   push:
     branches:
       - "main"

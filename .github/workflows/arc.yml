@@ -1,7 +1,6 @@
 ---
 name: arc-runner build
 on:
-  merge_group:
   push:
     branches:
       - "main"
