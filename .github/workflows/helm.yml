@@ -1,6 +1,7 @@
 ---
 name: helm-toolbox build
 on:
+  merge_group:
   push:
     branches:
       - "main"

@@ -1,8 +1,0 @@
----
-name: Merge queue validate
-on:
-  merge_group:
-jobs:
-  build-toolbox:
-    if: github.event_name == 'pull_request'
-    uses: ixxeL-DevOps/gha-templates/.github/workflows/docker-build.yaml@main
