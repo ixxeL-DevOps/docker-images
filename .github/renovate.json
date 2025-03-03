@@ -66,8 +66,7 @@
       "matchFileNames": ["src/**"],
       "addLabels": ["MANUAL-REVIEW", "{{ lookup (split packageFileDir '/') 1 }}"],
       "groupName": "{{ lookup (split packageFileDir '/') 1 }}",
-      "automerge": false,
-      "packageName": "python"
+      "automerge": false
     },
     {
       "description": "Manual merge for Tooling instance major and minor updates",

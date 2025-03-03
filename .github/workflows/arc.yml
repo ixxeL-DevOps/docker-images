@@ -17,7 +17,8 @@ on:
       - "src/arc/**"
   workflow_dispatch:
 jobs:
-  build-runner:
+  build-toolbox:
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
     uses: ixxeL-DevOps/gha-templates/.github/workflows/docker-build.yaml@main
     with:
       component: arc
