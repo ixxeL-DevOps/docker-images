@@ -16,6 +16,7 @@ RUN apt-get update && \
     curl \
     wget \
     apt-transport-https \
+    ca-certificates \
     python3-pip \
     tar \
     gettext 
@@ -25,10 +26,13 @@ RUN curl -fsSL "https://cli.github.com/packages/githubcli-archive-keyring.gpg" |
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
     curl "https://baltocdn.com/helm/signing.asc" | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list && \
+    curl -fsSL "https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key" | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg > /dev/null && \
+    echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list && \
     apt-get update && \
     apt-get install -y \
     helm \
-    gh
+    gh \
+    kubectl
 
 RUN wget -qO /usr/local/bin/yq "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64" && \
     chmod a+x /usr/local/bin/yq && \
