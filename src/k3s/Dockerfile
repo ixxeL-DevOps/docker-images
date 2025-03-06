@@ -1,12 +1,12 @@
 #FROM rancher/k3s:v1.0.0 as base
-FROM rancher/k3s:v1.29.2-k3s1 as base
+FROM rancher/k3s:v1.32.2-k3s1 as base
 
 # https://github.com/rancher/k3s/issues/390
 # Because of the above issue, we want to add
 # some software into our container, and alpine
 # is easier to work with than scratch.
 #FROM alpine:3.10
-FROM alpine:3.19
+FROM alpine:3.21
 
 # Do the same stuff in the k3s-scratch image's
 # final stage.
